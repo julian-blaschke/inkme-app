@@ -1,13 +1,11 @@
-import { StatusBar } from "expo-status-bar";
-import React from "react";
-import { Text, View } from "react-native";
-import tailwind from "tailwind-rn";
+import * as React from "react"
+import {NavigationContainer} from "@react-navigation/native"
+import AuthNavigator from "./src/navigation/AuthNavigator"
 
 export default function App() {
   return (
-    <View style={tailwind("flex-1 items-center justify-center bg-red-400")}>
-      <Text>inkme app</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+    <NavigationContainer>
+      <AuthNavigator></AuthNavigator>
+    </NavigationContainer>
+  )
 }
