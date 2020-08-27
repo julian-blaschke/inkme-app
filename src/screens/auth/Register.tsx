@@ -5,17 +5,28 @@ import {SafeAreaView} from "react-native-safe-area-context"
 import {TextInput, TouchableOpacity} from "react-native-gesture-handler"
 import {useForm, Controller} from "react-hook-form"
 import {AuthNavProps} from "../../navigation/AuthNavigator"
+import firebase from "../../../firebase"
 
 type FormData = {
   email: string
+  username: string
   password: string
 }
 
 export default ({navigation}: AuthNavProps<"login">) => {
   const {control, handleSubmit, errors} = useForm<FormData>({
-    defaultValues: {email: "", password: ""},
+    defaultValues: {email: "", username: "", password: ""},
   })
-  const onSubmit = handleSubmit(values => console.log(values))
+  const onSubmit = handleSubmit(async ({email, username, password}) => {
+    try {
+      const {user} = await firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password)
+      await user?.updateProfile({displayName: username})
+    } catch (err) {
+      console.error(err)
+    }
+  })
 
   return (
     <SafeAreaView style={tailwind("h-full w-full")}>
@@ -46,13 +57,36 @@ export default ({navigation}: AuthNavProps<"login">) => {
             )}></Controller>
           <Text style={tailwind("text-pink-500")}>{errors.email?.message}</Text>
           <Text style={tailwind("py-2 pt-6 text-xl font-semibold ")}>
+            Username
+          </Text>
+          <Controller
+            name="username"
+            rules={{
+              required: "Username is required",
+              minLength: {value: 3, message: "Username is too short"},
+              maxLength: {value: 35, message: "Username is too long"},
+            }}
+            control={control}
+            render={({onChange, onBlur, value}) => (
+              <TextInput
+                style={tailwind(
+                  "py-2 px-4 w-full text-base text-gray-700 border rounded border-gray-500"
+                )}
+                placeholder="example@email.com"
+                onChangeText={onChange}
+                {...{onBlur, value}}></TextInput>
+            )}></Controller>
+          <Text style={tailwind("text-pink-500")}>
+            {errors.username?.message}
+          </Text>
+          <Text style={tailwind("py-2 pt-6 text-xl font-semibold ")}>
             Password
           </Text>
           <Controller
             name="password"
             rules={{
               required: "Password is required",
-              minLength: {value: 5, message: "Password is too short"},
+              minLength: {value: 6, message: "Password is too short"},
               maxLength: {value: 40, message: "Password is too long"},
             }}
             control={control}

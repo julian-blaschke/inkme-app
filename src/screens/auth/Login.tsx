@@ -5,17 +5,26 @@ import {SafeAreaView} from "react-native-safe-area-context"
 import {TextInput, TouchableOpacity} from "react-native-gesture-handler"
 import {useForm, Controller} from "react-hook-form"
 import {AuthNavProps} from "../../navigation/AuthNavigator"
+import firebase from "../../../firebase"
 
 type FormData = {
   email: string
   password: string
 }
 
+const auth = firebase.auth()
+
 export default ({navigation}: AuthNavProps<"login">) => {
   const {control, handleSubmit, errors} = useForm<FormData>({
     defaultValues: {email: "", password: ""},
   })
-  const onSubmit = handleSubmit(values => console.log(values))
+  const onSubmit = handleSubmit(async ({email, password}) => {
+    try {
+      await auth.signInWithEmailAndPassword(email, password)
+    } catch (err) {
+      console.error(err)
+    }
+  })
 
   return (
     <SafeAreaView>
