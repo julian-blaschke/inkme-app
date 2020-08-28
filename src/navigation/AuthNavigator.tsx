@@ -19,6 +19,11 @@ export type AuthNavProps<T extends keyof AuthParamList> = {
 
 const Stack = createStackNavigator()
 
+/**
+ * helps navigate to authentication-related screens
+ *
+ * @return navigator with screens `login` and `register`
+ */
 export default function () {
   return (
     <Stack.Navigator screenOptions={{header: () => null}}>
