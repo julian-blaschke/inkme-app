@@ -18,15 +18,18 @@ type OnPressHandler = ((event: GestureResponderEvent) => void) | undefined
  *
  * @param onPress handler for the `onPress` event
  * @param style additional styles for the touchableopacity
+ * @param diabled if set to true, button will not listen for `onPress` events
  * @returns button as touchableOpacity component
  *
  */
 export const Button: React.FC<{
   onPress?: OnPressHandler
   style?: StyleProp<ViewStyle>
-}> = ({onPress, style, children}) => {
+  disabled?: boolean
+}> = ({onPress, style, children, disabled}) => {
   return (
     <TouchableOpacity
+      disabled={disabled}
       onPress={onPress}
       style={Object.assign(
         tailwind("px-4 py-2 mt-10 bg-gray-900 rounded-lg"),

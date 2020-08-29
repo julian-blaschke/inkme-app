@@ -23,7 +23,7 @@ export interface ShopProps {
 
 /**
  * this component will be shown on a users timeline
- * it shows an image, name and role of the user at that shop.
+ * it displays an image, name and role of the user at that shop.
  *
  * @param photoURL uri to the image source of the shop
  * @param name name of the shop
@@ -68,7 +68,7 @@ export const Shops: React.FC<{shops: ShopProps[]}> = ({shops}) => {
   return (
     <ScrollView horizontal={true}>
       {shops.map((shop, i) => (
-        <View style={tailwind("mr-6")}>
+        <View key={i} style={tailwind("mr-6")}>
           <Shop key={i} {...shop}></Shop>
         </View>
       ))}

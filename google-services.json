@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "575039545179",
+    "firebase_url": "https://inkme-ada04.firebaseio.com",
+    "project_id": "inkme-ada04",
+    "storage_bucket": "inkme-ada04.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:575039545179:android:da7c32c261b108a48c047e",
+        "android_client_info": {
+          "package_name": "com.inkme"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "575039545179-fss6pemc63qgdpru9cn1rjmtfe0ni6bf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0C24xq-GV6OvaKQ8jLR8Q5NyNrM8PnDE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "575039545179-fss6pemc63qgdpru9cn1rjmtfe0ni6bf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "575039545179-3v4t2hs348t3bhbv7e1rqqbuoethegq4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.inkme"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

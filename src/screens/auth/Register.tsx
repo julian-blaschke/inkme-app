@@ -5,17 +5,21 @@ import {SafeAreaView} from "react-native-safe-area-context"
 import {TextInput, TouchableOpacity} from "react-native-gesture-handler"
 import {useForm, Controller} from "react-hook-form"
 import {AuthNavProps} from "../../navigation/AuthNavigator"
-import firebase from "../../../firebase"
+import firebase, {auth} from "../../../firebase"
 import {ControlledInput} from "../../components/ControlledInput"
 import {emailRules, usernameRules, passwordRules} from "../../validation/rules"
 import {Label, ErrorLabel} from "../../components/Label"
 import {Button, SocialMediaButtons} from "../../components/Button"
+import {useSignUpWithEmailAndPassword} from "../../hooks/auth/useRegister"
+import {useSignInWithGoogle} from "../../hooks/auth/useSignIn"
 
 type FormData = {
   email: string
   username: string
   password: string
 }
+
+const defaultValues: FormData = {email: "", username: "", password: ""}
 
 /**
  * screen to register with either email, username & password or
@@ -25,20 +29,9 @@ type FormData = {
  * @returns `register` screen
  */
 export default ({navigation}: AuthNavProps<"login">) => {
-  const {control, handleSubmit, errors} = useForm<FormData>({
-    defaultValues: {email: "", username: "", password: ""},
-  })
-
-  const onSubmit = handleSubmit(async ({email, username, password}) => {
-    try {
-      const {user} = await firebase
-        .auth()
-        .createUserWithEmailAndPassword(email, password)
-      await user?.updateProfile({displayName: username})
-    } catch (err) {
-      console.error(err)
-    }
-  })
+  const {control, handleSubmit, errors} = useForm<FormData>({defaultValues})
+  const {signUp, isLoading, error} = useSignUpWithEmailAndPassword()
+  const {signInWithGoogle, error: googleError} = useSignInWithGoogle()
 
   return (
     <SafeAreaView style={tailwind("h-full w-full")}>
@@ -74,11 +67,19 @@ export default ({navigation}: AuthNavProps<"login">) => {
               placeholder="malone1234"></ControlledInput>
             <ErrorLabel>{errors.password?.message}</ErrorLabel>
           </View>
-          <Button onPress={onSubmit} style={tailwind("bg-pink-500")}>
+          <Button
+            onPress={handleSubmit(signUp)}
+            style={tailwind("bg-pink-500 mb-4")}>
             Sign Up
           </Button>
+          <ErrorLabel>{error}</ErrorLabel>
           <LoginLink navigation={navigation}></LoginLink>
-          <SocialMediaButtons title="or Sign Up with"></SocialMediaButtons>
+          <SocialMediaButtons
+            onPressGoogle={signInWithGoogle}
+            title="or Sign Up with"></SocialMediaButtons>
+          <View style={tailwind("mt-4")}>
+            <ErrorLabel>{googleError}</ErrorLabel>
+          </View>
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -88,11 +89,11 @@ export default ({navigation}: AuthNavProps<"login">) => {
 const LoginLink: React.FC<Partial<AuthNavProps<"login">>> = ({navigation}) => (
   <View>
     <Text style={tailwind("pt-2 text-center text-gray-500")}>
-      Don´t have an account yet?{" "}
+      Already have an account?{" "}
       <Text
-        onPress={() => navigation?.navigate("register")}
-        style={tailwind("underline text-pink-500")}>
-        Sign up
+        onPress={() => navigation?.navigate("login")}
+        style={tailwind("underline text-gray-900")}>
+        Sign in
       </Text>
     </Text>
   </View>

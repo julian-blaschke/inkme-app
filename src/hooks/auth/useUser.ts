@@ -1,5 +1,5 @@
 import {useState, useEffect} from "react"
-import firebase from "../../../firebase"
+import {auth} from "../../../firebase"
 
 /**
  * subscribe to the onAuthStateChanged firebase observable,
@@ -9,10 +9,9 @@ import firebase from "../../../firebase"
  */
 export default () => {
   const [user, setUser] = useState<firebase.User | null>(null)
+  //auth.signOut()
   useEffect(() => {
-    const unsubscribe = firebase
-      .auth()
-      .onAuthStateChanged(user => setUser(user))
+    const unsubscribe = auth.onAuthStateChanged(user => setUser(user))
     return () => unsubscribe()
   }, [])
   return user

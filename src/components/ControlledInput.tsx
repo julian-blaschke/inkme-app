@@ -37,6 +37,7 @@ export const ControlledInput: React.FC<ControlledInputProps> = ({
           autoCapitalize="none"
           placeholder={placeholder}
           onChangeText={onChange}
+          secureTextEntry={name == "password" ? true : false}
           onBlur={onBlur}
           value={value}></TextInput>
       )}></Controller>

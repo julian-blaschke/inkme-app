@@ -13,14 +13,21 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
+      "bundleIdentifier": "com.inkme",
+      "config": {
+        "googleSignIn": {
+          "reversedClientId": "com.googleusercontent.apps.575039545179-3v4t2hs348t3bhbv7e1rqqbuoethegq4"
+        }
+      },
+      "googleServicesFile": "./GoogleService-Info.plist",
       "supportsTablet": true
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    }
+    "android": {
+      "package": "com.inkme",
+      "googleServicesFile": "./google-services.json"
+    },
+    "web": {}
   }
 }

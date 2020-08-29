@@ -4,18 +4,18 @@ import {View, Text, KeyboardAvoidingView, Platform, Image} from "react-native"
 import {SafeAreaView} from "react-native-safe-area-context"
 import {useForm} from "react-hook-form"
 import {AuthNavProps} from "../../navigation/AuthNavigator"
-import firebase from "../../../firebase"
 import {ControlledInput} from "../../components/ControlledInput"
 import {emailRules, passwordRules} from "../../validation/rules"
 import {Label, ErrorLabel} from "../../components/Label"
 import {Button, SocialMediaButtons} from "../../components/Button"
+import {useSignInWithEmailAndPassword} from "../../hooks/auth/useSignIn"
 
 type FormData = {
   email: string
   password: string
 }
 
-const auth = firebase.auth()
+const defaultValues: FormData = {email: "", password: ""}
 
 /**
  * screen to login to inkme with email & password or
@@ -25,16 +25,8 @@ const auth = firebase.auth()
  * @returns `login` screen
  */
 export default ({navigation}: AuthNavProps<"login">) => {
-  const {control, handleSubmit, errors} = useForm<FormData>({
-    defaultValues: {email: "", password: ""},
-  })
-  const onSubmit = handleSubmit(async ({email, password}) => {
-    try {
-      await auth.signInWithEmailAndPassword(email, password)
-    } catch (err) {
-      console.error(err)
-    }
-  })
+  const {control, handleSubmit, errors} = useForm<FormData>({defaultValues})
+  const {signIn, error, isLoading} = useSignInWithEmailAndPassword()
 
   return (
     <SafeAreaView>
@@ -61,7 +53,13 @@ export default ({navigation}: AuthNavProps<"login">) => {
               placeholder="malone1234"></ControlledInput>
             <ErrorLabel>{errors.password?.message}</ErrorLabel>
           </View>
-          <Button onPress={onSubmit}>Sign In</Button>
+          <Button
+            onPress={handleSubmit(signIn)}
+            disabled={isLoading}
+            style={tailwind("mb-4")}>
+            Sign In
+          </Button>
+          <ErrorLabel>{error}</ErrorLabel>
           <RegisterLink navigation={navigation}></RegisterLink>
           <SocialMediaButtons title="or Sign In with"></SocialMediaButtons>
         </View>
