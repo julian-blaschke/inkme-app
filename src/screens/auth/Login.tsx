@@ -1,6 +1,6 @@
 import * as React from "react"
 import tailwind from "tailwind-rn"
-import {View, Text, KeyboardAvoidingView, Platform, Image} from "react-native"
+import {View, Text, KeyboardAvoidingView, Platform} from "react-native"
 import {SafeAreaView} from "react-native-safe-area-context"
 import {useForm} from "react-hook-form"
 import {AuthNavProps} from "../../navigation/AuthNavigator"
@@ -18,7 +18,7 @@ type FormData = {
 const defaultValues: FormData = {email: "", password: ""}
 
 /**
- * screen to login to inkme with email & password or
+ * screen to login with email & password or
  * 3rd party services like Google, Facebook or Apple
  *
  * @param {AuthNavProps<"login">} {navigation} auth stack navigator

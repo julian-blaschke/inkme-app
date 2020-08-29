@@ -1,11 +1,9 @@
 import * as React from "react"
 import tailwind from "tailwind-rn"
-import {View, Text, Image, KeyboardAvoidingView, Platform} from "react-native"
+import {View, Text, KeyboardAvoidingView, Platform} from "react-native"
 import {SafeAreaView} from "react-native-safe-area-context"
-import {TextInput, TouchableOpacity} from "react-native-gesture-handler"
-import {useForm, Controller} from "react-hook-form"
+import {useForm} from "react-hook-form"
 import {AuthNavProps} from "../../navigation/AuthNavigator"
-import firebase, {auth} from "../../../firebase"
 import {ControlledInput} from "../../components/ControlledInput"
 import {emailRules, usernameRules, passwordRules} from "../../validation/rules"
 import {Label, ErrorLabel} from "../../components/Label"
@@ -69,6 +67,7 @@ export default ({navigation}: AuthNavProps<"login">) => {
           </View>
           <Button
             onPress={handleSubmit(signUp)}
+            disabled={isLoading}
             style={tailwind("bg-pink-500 mb-4")}>
             Sign Up
           </Button>

@@ -3,11 +3,24 @@ import * as Google from "expo-google-app-auth"
 import firebase, {auth} from "../../../firebase"
 import {iosClientId} from "../../../firebase.config"
 
+/**
+ * provides functionality to sign in a user into firebase authentication
+ * with email and password
+ *
+ * @returns sign-in callable, error (if there is one), status
+ */
 export const useSignInWithEmailAndPassword = () => {
   const [error, setError] = useState<string>()
   const [isLoading, setIsLoading] = useState<boolean>(false)
   type SignInProps = {email: string; password: string}
 
+  /**
+   * callable to sign in a user into firebase authentication with
+   * email and password
+   *
+   * @param email email of user to sign in
+   * @param password password of user to sign in
+   */
   const signIn = async ({email, password}: SignInProps) => {
     setError("")
     setIsLoading(true)
@@ -22,16 +35,30 @@ export const useSignInWithEmailAndPassword = () => {
   return {signIn, error, isLoading}
 }
 
+/**
+ * provides functionality to sign in a user into firebase authentication
+ * with Google provider
+ *
+ * @returns sign-in callable, error (if there is one), status
+ */
 export const useSignInWithGoogle = () => {
   const [error, setError] = useState<string>()
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
+  /**
+   * sign in callable to sign in a user into firebase authentication with
+   * Google provider - works with Google OAuth API (browser pop-up) to retrieve
+   * credentials, then signs into firebase authentication
+   *
+   */
   const signInWithGoogle = async () => {
     setIsLoading(true)
     setError("")
     try {
+      //open pop-up and sign in user with Google API OAuth
       const result = await Google.logInAsync({
         iosClientId,
+        //TODO: add androidClientId here
         scopes: ["profile", "email"],
       })
       if (result.type == "success") {
@@ -40,7 +67,8 @@ export const useSignInWithGoogle = () => {
           idToken,
           accessToken
         )
-        auth.signInWithCredential(credential)
+        //then sign user into firebase
+        await auth.signInWithCredential(credential)
       } else {
         setError("Authentication has been cancelled")
       }
