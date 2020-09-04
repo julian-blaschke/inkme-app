@@ -9,8 +9,8 @@ export const emailRules: ValidationRules = {
 }
 
 export const usernameRules: ValidationRules = {
-  required: "Username is required",
-  minLength: {value: 3, message: "Username is too short"},
+  required: "This field is required",
+  minLength: {value: 3, message: "Username mus be at least 3 letters"},
   maxLength: {value: 35, message: "Username is too long"},
 }
 

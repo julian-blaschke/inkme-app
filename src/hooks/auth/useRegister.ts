@@ -1,5 +1,5 @@
 import {useState} from "react"
-import {auth} from "../../../firebase"
+import {auth, firestore} from "../../../firebase"
 
 /**
  * provides functionality to sign a user into firebase authentication
@@ -10,23 +10,29 @@ import {auth} from "../../../firebase"
 export const useSignUpWithEmailAndPassword = () => {
   const [error, setError] = useState<string>()
   const [isLoading, setIsLoading] = useState<boolean>()
-  type RegisterProps = {email: string; username: string; password: string}
+  type SignUpProps = {email: string; password: string}
 
   /**
-   * callable to sign up a user to firebase authentication with
+   * callable to sign up a user to firebase authenti  cation with
    * email and password
    *
    * @param email email of user to sign in (must be unique in firebase)
    * @param username username of user to sign in (must be unique in firebase)
    * @param password password of user to sign in
    */
-  const signUp = async ({email, username, password}: RegisterProps) => {
+  const signUp = async ({email, password}: SignUpProps) => {
     setError("")
     setIsLoading(true)
     try {
-      const {user} = await auth.createUserWithEmailAndPassword(email, password)
-      //username will be stored as `displayname` in firebase
-      await user?.updateProfile({displayName: username})
+      auth
+        .createUserWithEmailAndPassword(email, password)
+        .then(async ({user}) => {
+          if (user) {
+            let {uid} = user
+            await firestore.collection("users").doc(uid.toString()).set({})
+          }
+        })
+        .catch(err => setError(err))
     } catch ({message}) {
       setError(message)
     } finally {

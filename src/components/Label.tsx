@@ -12,5 +12,5 @@ export const Label: React.FC = ({children}) => {
 }
 
 export const ErrorLabel: React.FC = ({children}) => {
-  return <Text style={tailwind("text-pink-500")}>{children}</Text>
+  return <Text style={tailwind("text-red-500 mt-1")}>{children}</Text>
 }

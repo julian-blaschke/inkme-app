@@ -1,5 +1,6 @@
 import {useState} from "react"
 import * as Google from "expo-google-app-auth"
+import * as AppleAuthentication from "expo-apple-authentication"
 import firebase, {auth} from "../../../firebase"
 import {iosClientId} from "../../../firebase.config"
 
@@ -79,4 +80,43 @@ export const useSignInWithGoogle = () => {
     }
   }
   return {signInWithGoogle, isLoading, error}
+}
+
+/**
+ * provides functionality to sign in a user into firebase authentication
+ * with Apple
+ *
+ * @returns sign-in callable, error (if there is one), status
+ */
+export const useSignInWithApple = () => {
+  const [error, setError] = useState<string>()
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+
+  /**
+   * sign in callable to sign in a user into firebase authentication with
+   * Google provider - works with Google OAuth API (browser pop-up) to retrieve
+   * credentials, then signs into firebase authentication
+   *
+   */
+  const signInWithApple = async () => {
+    setIsLoading(true)
+    setError("")
+    try {
+      const {identityToken} = await AppleAuthentication.signInAsync({
+        requestedScopes: [AppleAuthentication.AppleAuthenticationScope.EMAIL],
+      })
+      const provider = new firebase.auth.OAuthProvider("apple.com")
+      if (identityToken) {
+        const credential = provider.credential({idToken: identityToken})
+        await auth.signInWithCredential(credential)
+      } else {
+        setError("Sign in unsuccessful. Please try again.")
+      }
+    } catch ({message}) {
+      setError(message)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+  return {signInWithApple, isLoading, error}
 }

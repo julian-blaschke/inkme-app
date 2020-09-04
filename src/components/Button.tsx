@@ -1,91 +1,74 @@
 import * as React from "react"
 import {TouchableOpacity} from "react-native-gesture-handler"
-import {
-  GestureResponderEvent,
-  Text,
-  View,
-  Image,
-  ImageSourcePropType,
-  StyleProp,
-  ViewStyle,
-} from "react-native"
+import {Text, Image, TouchableOpacityProps} from "react-native"
+import * as AppleAuthentication from "expo-apple-authentication"
 import tailwind from "tailwind-rn"
-
-type OnPressHandler = ((event: GestureResponderEvent) => void) | undefined
+import firebase, {auth} from "../../firebase"
+import {useSignInWithGoogle, useSignInWithApple} from "../hooks/auth/useSignIn"
+import {ErrorLabel} from "./Label"
 
 /**
  * alternative to react-native`s button component
  *
- * @param onPress handler for the `onPress` event
- * @param style additional styles for the touchableopacity
- * @param diabled if set to true, button will not listen for `onPress` events
- * @returns button as touchableOpacity component
+ * @param {TouchableOpacityProps} {props} to pass down to the TouchableOpacity
+ * @returns button as TouchableOpacity component
  *
  */
-export const Button: React.FC<{
-  onPress?: OnPressHandler
-  style?: StyleProp<ViewStyle>
-  disabled?: boolean
-}> = ({onPress, style, children, disabled}) => {
+export const Button: React.FC<TouchableOpacityProps> = props => {
+  let {style, ...rest} = props
   return (
     <TouchableOpacity
-      disabled={disabled}
-      onPress={onPress}
       style={Object.assign(
-        tailwind("px-4 py-2 mt-10 bg-gray-900 rounded-lg"),
+        tailwind(
+          "h-10 my-1 flex flex-row justify-center items-center bg-white rounded-md"
+        ),
         style
-      )}>
-      <Text style={tailwind("text-xl text-center text-gray-100")}>
-        {children}
-      </Text>
+      )}
+      {...rest}>
+      {props.children}
     </TouchableOpacity>
   )
 }
 
 /**
- * component to sign in/up to inkme with a 3rd party
- * service like Google, Facebook & Apple
+ * button to sign into firebase with Google OAuth
  *
- * @param source image source of the icon
- * @param onPress handler for the `onPress` event
- * @returns icon of the service
+ * @param {TouchableOpacityProps} {props} to pass down to the TouchableOpacity
+ * @returns button with Google-icon as TouchableOpacity component
  */
-export const SocialMediaButton: React.FC<{
-  source: ImageSourcePropType
-  onPress: OnPressHandler
-}> = ({source, onPress}) => (
-  <TouchableOpacity onPress={onPress}>
-    <Image source={source} style={tailwind("h-10 w-10 mx-4")}></Image>
-  </TouchableOpacity>
-)
+export const SignInWithGoogleButton: React.FC<TouchableOpacityProps> = props => {
+  const {signInWithGoogle, isLoading, error} = useSignInWithGoogle()
+  return (
+    <>
+      <Button disabled={isLoading} onPress={signInWithGoogle} {...props}>
+        <Image
+          source={require("../../assets/icons/socialMedia/Google.png")}
+          style={tailwind("h-3 w-3 mr-1")}></Image>
+        <Text style={tailwind("font-medium")}>Sign In With Google</Text>
+      </Button>
+      <ErrorLabel>{error}</ErrorLabel>
+    </>
+  )
+}
 
 /**
- * horizontal list of socailmediabutton components
+ * Button to sign into firebase authentication with apple provider
  *
- * @param title header for the horizontal list
- * @param onPressGoogle handler for Google
- * @param onFacebookhandler for Facebook
- * @param onApplehandler for Apple
- * @returns horizontal list of socialmedia buttons as view
+ * @returns button with Apple-icon as TouchableOpacity component
  */
-export const SocialMediaButtons: React.FC<{
-  title: string
-  onPressGoogle?: OnPressHandler
-  onPressFacebook?: OnPressHandler
-  onPressApple?: OnPressHandler
-}> = ({title, onPressApple, onPressFacebook, onPressGoogle}) => (
-  <View style={tailwind("pt-6")}>
-    <Text style={tailwind("text-center text-gray-500")}>{title}</Text>
-    <View style={tailwind("flex flex-row mt-10 justify-center")}>
-      <SocialMediaButton
-        onPress={onPressGoogle}
-        source={require("../../assets/icons/socialMedia/Google.png")}></SocialMediaButton>
-      <SocialMediaButton
-        onPress={onPressFacebook}
-        source={require("../../assets/icons/socialMedia/Facebook.png")}></SocialMediaButton>
-      <SocialMediaButton
-        onPress={onPressApple}
-        source={require("../../assets/icons/socialMedia/Apple.jpg")}></SocialMediaButton>
-    </View>
-  </View>
-)
+export const SignInWithAppleButton: React.FC = () => {
+  const {signInWithApple, isLoading, error} = useSignInWithApple()
+  return (
+    <>
+      <AppleAuthentication.AppleAuthenticationButton
+        buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
+        buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
+        cornerRadius={5}
+        onPress={signInWithApple}
+        style={tailwind(
+          "h-10 w-full my-1"
+        )}></AppleAuthentication.AppleAuthenticationButton>
+      <ErrorLabel>{error}</ErrorLabel>
+    </>
+  )
+}

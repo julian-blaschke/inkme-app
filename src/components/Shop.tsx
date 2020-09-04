@@ -69,7 +69,7 @@ export const Shops: React.FC<{shops: ShopProps[]}> = ({shops}) => {
     <ScrollView horizontal={true}>
       {shops.map((shop, i) => (
         <View key={i} style={tailwind("mr-6")}>
-          <Shop key={i} {...shop}></Shop>
+          <Shop {...shop}></Shop>
         </View>
       ))}
     </ScrollView>

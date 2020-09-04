@@ -1,7 +1,10 @@
-import * as firebase from "firebase"
+import app from "firebase/app"
+import "firebase/auth"
+import "firebase/firestore"
 import config from "./firebase.config"
 
-firebase.initializeApp(config)
+app.initializeApp(config)
 
-export default firebase
-export const auth = firebase.auth()
+export default app
+export const auth = app.auth()
+export const firestore = app.firestore()

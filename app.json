@@ -21,12 +21,10 @@
           "reversedClientId": "com.googleusercontent.apps.575039545179-3v4t2hs348t3bhbv7e1rqqbuoethegq4"
         }
       },
-      "googleServicesFile": "./GoogleService-Info.plist",
       "supportsTablet": true
     },
     "android": {
-      "package": "com.inkme",
-      "googleServicesFile": "./google-services.json"
+      "package": "com.inkme"
     },
     "web": {}
   }

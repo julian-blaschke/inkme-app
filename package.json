@@ -14,6 +14,7 @@
     "@react-navigation/native": "^5.7.3",
     "@react-navigation/stack": "^5.9.0",
     "expo": "^38.0.9",
+    "expo-apple-authentication": "~2.2.1",
     "expo-constants": "~9.1.1",
     "expo-google-app-auth": "^8.1.2",
     "expo-google-sign-in": "~8.2.1",
@@ -31,12 +32,16 @@
     "react-native-svg": "12.1.0",
     "react-native-vector-icons": "^7.0.0",
     "react-native-web": "~0.11.7",
-    "tailwind-rn": "^1.1.1"
+    "rxfire": "^3.13.5",
+    "rxjs": "^6.6.2",
+    "tailwind-rn": "^1.1.1",
+    "yup": "^0.29.3"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",
     "@types/react": "~16.9.41",
     "@types/react-native": "~0.62.13",
+    "@types/yup": "^0.29.6",
     "typescript": "~3.9.5"
   },
   "private": true

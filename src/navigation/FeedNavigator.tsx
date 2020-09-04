@@ -2,15 +2,14 @@ import * as React from "react"
 import {
   StackNavigationProp,
   createStackNavigator,
-  TransitionPresets,
 } from "@react-navigation/stack"
 import tailwind, {getColor} from "tailwind-rn"
 import {RouteProp} from "@react-navigation/native"
 import {Ionicons} from "@expo/vector-icons"
 import Feed from "../screens/home/Feed"
-import useUser from "../hooks/auth/useUser"
 import Me from "../screens/user/Me"
 import {Avatar} from "../components/Avatar"
+import {useUser} from "../hooks/auth/useUser"
 
 export type FeedParamList = {
   feed: undefined
@@ -30,19 +29,19 @@ const Stack = createStackNavigator()
  * @returns navigator with screens `feed` & `myProfile`
  */
 export default function () {
-  const user = useUser()
+  const {user} = useUser()
   return (
     <Stack.Navigator>
       <Stack.Screen
         name="feed"
         component={Feed}
         options={({navigation}) => ({
-          title: "Subscriptions ",
+          title: "Feed ",
           headerRight: () => (
             <Avatar
               photoURL={user?.photoURL}
               onPress={() => navigation.navigate("myProfile")}
-              style={tailwind("h-10 w-10 border-2")}></Avatar>
+              style={tailwind("h-10 w-10")}></Avatar>
           ),
           headerRightContainerStyle: tailwind("p-4"),
           headerTitleStyle: tailwind("text-2xl font-semibold"),
@@ -53,10 +52,10 @@ export default function () {
         name="myProfile"
         component={Me}
         options={() => ({
-          title: user?.displayName || "My Profile",
+          title: user?.username || "My Profile",
           headerBackImage: () => (
             <Ionicons
-              name="ios-arrow-down"
+              name="ios-arrow-back"
               size={30}
               style={tailwind("px-4")}></Ionicons>
           ),
@@ -70,7 +69,6 @@ export default function () {
           ),
           headerTitleStyle: tailwind("text-xl font-semibold"),
           headerBackground: () => null,
-          ...TransitionPresets.ModalSlideFromBottomIOS,
         })}></Stack.Screen>
     </Stack.Navigator>
   )

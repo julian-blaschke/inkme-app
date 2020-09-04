@@ -25,10 +25,7 @@ export const Avatar: React.FC<AvatarProps> = ({photoURL, onPress, style}) => {
   return (
     <TouchableOpacity {...{onPress}}>
       <Image
-        style={Object.assign(
-          tailwind("rounded-full border-4 border-pink-500"),
-          style
-        )}
+        style={Object.assign(tailwind("rounded-full"), style)}
         source={{uri}}></Image>
     </TouchableOpacity>
   )

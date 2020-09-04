@@ -6,10 +6,12 @@ import {
 import {RouteProp} from "@react-navigation/native"
 import Login from "../screens/auth/Login"
 import Register from "../screens/auth/Register"
+import ChooseUsername from "../screens/auth/ChooseUsername"
 
 export type AuthParamList = {
   login: undefined
   register: undefined
+  chooseUsername: undefined
 }
 
 export type AuthNavProps<T extends keyof AuthParamList> = {
@@ -29,6 +31,9 @@ export default function () {
     <Stack.Navigator screenOptions={{header: () => null}}>
       <Stack.Screen name="login" component={Login}></Stack.Screen>
       <Stack.Screen name="register" component={Register}></Stack.Screen>
+      <Stack.Screen
+        name="chooseUsername"
+        component={ChooseUsername}></Stack.Screen>
     </Stack.Navigator>
   )
 }

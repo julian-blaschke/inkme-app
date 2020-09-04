@@ -1,10 +1,10 @@
 import * as React from "react"
-import {View, Text, SafeAreaView, Image} from "react-native"
+import {View, Text} from "react-native"
 import tailwind from "tailwind-rn"
-import {TouchableOpacity, ScrollView} from "react-native-gesture-handler"
+import {TouchableOpacity} from "react-native-gesture-handler"
 import {StatsticProps, Statistics} from "../../components/Statistics"
 import {Avatar} from "../../components/Avatar"
-import {Shop, Shops, ShopProps} from "../../components/Shop"
+import {Shops, ShopProps} from "../../components/Shop"
 
 /**
  * Shows all information of the currently logged in user, such as
