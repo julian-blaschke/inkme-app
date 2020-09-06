@@ -12,6 +12,7 @@ import Discover from "../screens/home/Discover"
 import FeedNavigator from "./FeedNavigator"
 import Camera from "../screens/home/Camera"
 import CameraNavigator from "./CameraNavigator"
+import Me from "../screens/user/Me"
 
 export type HomeParamList = {
   feed: undefined
@@ -77,6 +78,7 @@ export default function () {
       <RootStack.Screen
         name="modal"
         component={CameraNavigator}></RootStack.Screen>
+      <RootStack.Screen name="me" component={Me}></RootStack.Screen>
     </RootStack.Navigator>
   )
 }

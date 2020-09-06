@@ -8,11 +8,11 @@ import {RouteProp, useNavigation} from "@react-navigation/native"
 import {Ionicons} from "@expo/vector-icons"
 import Feed from "../screens/home/Feed"
 import Me from "../screens/user/Me"
-import {Avatar} from "../components/Avatar"
 import {useUser} from "../hooks/auth/useUser"
 import {View} from "react-native"
 import {TouchableOpacity} from "react-native-gesture-handler"
 import create from "zustand"
+import {Avatar} from "../components/profile/Avatar"
 
 export type FeedParamList = {
   feed: undefined
@@ -52,20 +52,13 @@ export default function () {
                   size={40}
                   style={tailwind("px-4")}></Ionicons>
               </TouchableOpacity>
-              <Avatar
-                photoURL={user?.photoURL}
-                onPress={() => navigation.navigate("myProfile")}
-                style={tailwind("w-10 h-10")}></Avatar>
+              <TouchableOpacity onPress={() => navigation.navigate("me")}>
+                <Avatar
+                  photoURL={user?.photoURL}
+                  style={tailwind("w-10 h-10")}></Avatar>
+              </TouchableOpacity>
             </View>
           ),
-          headerRightContainerStyle: tailwind("mx-3"),
-        })}></Stack.Screen>
-      <Stack.Screen
-        name="myProfile"
-        component={Me}
-        options={({navigation}) => ({
-          title: user?.username,
-          headerRight: () => <Ionicons name="ios-options" size={20}></Ionicons>,
           headerRightContainerStyle: tailwind("mx-3"),
         })}></Stack.Screen>
     </Stack.Navigator>
