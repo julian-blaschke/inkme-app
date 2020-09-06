@@ -17,7 +17,7 @@ export interface StatsticProps {
 export const Statistic = ({count, label}: StatsticProps) => (
   <View style={tailwind("flex items-center")}>
     <Text style={tailwind("text-lg font-bold ")}>{count}</Text>
-    <Text style={tailwind("mt-2 text-xs text-gray-500 uppercase font-medium ")}>
+    <Text style={tailwind("mt-2 text-xs text-gray-800 uppercase font-medium ")}>
       {label}
     </Text>
   </View>

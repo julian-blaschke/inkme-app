@@ -15,6 +15,7 @@
     "@react-navigation/stack": "^5.9.0",
     "expo": "^38.0.9",
     "expo-apple-authentication": "~2.2.1",
+    "expo-camera": "~8.3.1",
     "expo-constants": "~9.1.1",
     "expo-google-app-auth": "^8.1.2",
     "expo-google-sign-in": "~8.2.1",
@@ -26,6 +27,7 @@
     "react-hook-form": "^6.5.3",
     "react-native": "https://github.com/expo/react-native/archive/sdk-38.0.2.tar.gz",
     "react-native-gesture-handler": "~1.6.0",
+    "react-native-progress": "^4.1.2",
     "react-native-reanimated": "~1.9.0",
     "react-native-safe-area-context": "~3.0.7",
     "react-native-screens": "~2.9.0",
@@ -35,7 +37,8 @@
     "rxfire": "^3.13.5",
     "rxjs": "^6.6.2",
     "tailwind-rn": "^1.1.1",
-    "yup": "^0.29.3"
+    "yup": "^0.29.3",
+    "zustand": "^3.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",

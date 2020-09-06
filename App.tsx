@@ -5,6 +5,7 @@ import HomeNavigator from "./src/navigation/HomeNavigator"
 import {useAuthState, useUser} from "./src/hooks/auth/useUser"
 import {ActivityIndicator} from "react-native"
 import ChooseUsername from "./src/screens/auth/ChooseUsername"
+import {navigationRef} from "./RootNavigation"
 
 const CurrentNavigator = () => {
   const isLoggedIn = useAuthState()
@@ -23,7 +24,7 @@ const CurrentNavigator = () => {
 
 export default function App() {
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={navigationRef}>
       <CurrentNavigator></CurrentNavigator>
     </NavigationContainer>
   )

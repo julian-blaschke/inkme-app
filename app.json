@@ -16,11 +16,6 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "bundleIdentifier": "com.inkme",
-      "config": {
-        "googleSignIn": {
-          "reversedClientId": "com.googleusercontent.apps.575039545179-3v4t2hs348t3bhbv7e1rqqbuoethegq4"
-        }
-      },
       "supportsTablet": true
     },
     "android": {

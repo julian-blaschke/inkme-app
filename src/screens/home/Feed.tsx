@@ -2,8 +2,10 @@ import * as React from "react"
 import {FeedNavProps} from "../../navigation/FeedNavigator"
 import {StoryProps, Stories} from "../../components/story/Story"
 import tailwind from "tailwind-rn"
-import {View} from "react-native"
+import {View, SafeAreaView, Text} from "react-native"
 import {ScrollView} from "react-native-gesture-handler"
+import {Avatar} from "../../components/Avatar"
+import {useUser} from "../../hooks/auth/useUser"
 
 /**
  * Lists all storys of artists & shops you are subscirbed to,
@@ -27,9 +29,8 @@ export default function ({navigation}: FeedNavProps<"feed">) {
     },
   ]
   return (
-    <View>
+    <View style={tailwind("mt-4")}>
       <Stories stories={stories}></Stories>
-      <ScrollView style={tailwind("p-4")}></ScrollView>
     </View>
   )
 }
