@@ -6,12 +6,13 @@ import {ActivityIndicator, View} from "react-native"
 import ChooseUsername from "./src/screens/auth/ChooseUsername"
 import {navigationRef} from "./RootNavigation"
 import {Providers} from "./src/context/Providers"
-import {UserContext} from "./src/context/UserContext"
+import {AuthContext} from "./src/context/AuthContext"
 import tailwind from "tailwind-rn"
+import {UserContext} from "./src/context/UserContext"
 
 const CurrentNavigator: React.FC = () => {
-  const state = React.useContext(UserContext)
-  console.log(state)
+  const state = React.useContext(AuthContext)
+  const {setUser} = React.useContext(UserContext)
   if (state.isLoading) {
     return (
       <View style={tailwind("w-full h-full flex justify-center items-center")}>
@@ -19,7 +20,8 @@ const CurrentNavigator: React.FC = () => {
       </View>
     )
   } else if (state.isLoggedIn) {
-    if (state.hasUsername) {
+    if (setUser) setUser(state.user)
+    if (state.isInFirestore) {
       return <HomeNavigator></HomeNavigator>
     } else {
       return <ChooseUsername></ChooseUsername>

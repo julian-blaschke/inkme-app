@@ -9,7 +9,7 @@ import {TextInput} from "react-native-gesture-handler"
 import {firestore} from "../../../firebase"
 import {useUser} from "../../hooks/auth/useUser"
 import * as yup from "yup"
-import {UserContext} from "../../context/UserContext"
+import {UserContext} from "../../context/AuthContext"
 
 const checkUsernameAvailability = async (username: string) => {
   const snapshot = await firestore

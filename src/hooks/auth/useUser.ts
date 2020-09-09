@@ -1,7 +1,7 @@
-import {useEffect, useState, useReducer} from "react"
+import {useEffect, useReducer, useRef} from "react"
 import {auth, firestore} from "../../../firebase"
 import {docData} from "rxfire/firestore"
-import create from "zustand"
+import {Subscription} from "rxjs"
 
 export interface User extends firebase.User {
   username?: string
@@ -11,7 +11,7 @@ export type AuthState =
   | {
       isLoading: true
       isLoggedIn?: boolean
-      hasUsername?: boolean
+      isInFirestore?: boolean
       user?: firebase.User | User
     }
   | {
@@ -21,15 +21,15 @@ export type AuthState =
   | {
       isLoggedIn: true
       isLoading: false
-      hasUsername: false
+      isInFirestore: false
       user: firebase.User
     }
-  | {isLoggedIn: true; isLoading: false; hasUsername: true; user: User}
+  | {isLoggedIn: true; isLoading: false; isInFirestore: true; user: User}
 
 type Action =
   | {type: "initialize" | "loggedOut"}
   | {type: "login"; user: firebase.User}
-  | {type: "updateUser"; user: User}
+  | {type: "firestoreDoc"; user: User}
 
 const reducer = (state: AuthState, action: Action): AuthState => {
   switch (action.type) {
@@ -40,15 +40,15 @@ const reducer = (state: AuthState, action: Action): AuthState => {
     case "login":
       return {
         isLoading: false,
-        hasUsername: false,
+        isInFirestore: false,
         isLoggedIn: true,
         user: action.user,
       }
-    case "updateUser":
+    case "firestoreDoc":
       return {
         isLoading: false,
+        isInFirestore: true,
         isLoggedIn: true,
-        hasUsername: true,
         user: action.user,
       }
     default:
@@ -66,13 +66,29 @@ const initialState: AuthState = {isLoading: true}
  */
 export const useUser = () => {
   const [state, dispatch] = useReducer(reducer, initialState)
+  const firestoreSubscription = useRef<Subscription>()
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(user => {
-      if (user) dispatch({type: "login", user})
-      else dispatch({type: "loggedOut"})
+    const unsubscribe = auth.onAuthStateChanged(async user => {
+      if (user) {
+        const userRef = firestore.collection("users").doc(user.uid)
+        const userData = await userRef.get()
+        if (userData.exists) {
+          firestoreSubscription.current = docData(userRef).subscribe(
+            (userData: any) => {
+              dispatch({type: "firestoreDoc", user: {...user, ...userData}})
+            }
+          )
+        } else {
+          dispatch({type: "login", user})
+        }
+      } else dispatch({type: "loggedOut"})
     })
-    return () => unsubscribe()
+    return () => {
+      if (firestoreSubscription.current)
+        firestoreSubscription.current.unsubscribe()
+      unsubscribe()
+    }
   }, [])
 
   //if there is a user, go get to firestore
@@ -81,7 +97,8 @@ export const useUser = () => {
       if (!state.isLoading) dispatch({type: "initialize"})
       const userRef = firestore.collection("users").doc(auth.currentUser?.uid)
       const subscription = docData(userRef).subscribe((user: any) => {
-        dispatch({type: "updateUser", user: {...auth.currentUser, ...user}})
+        if (user) dispatch({type: "login", user})
+        dispatch({type: "", user: {...auth.currentUser, ...user}})
       })
       return () => subscription.unsubscribe()
     }

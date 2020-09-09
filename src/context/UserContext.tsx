@@ -1,10 +1,22 @@
-import * as React from "react"
+import React, {useState, useCallback} from "react"
 import {createContext} from "react"
-import {useUser, AuthState} from "../hooks/auth/useUser"
+import {User} from "../hooks/auth/useUser"
 
-export const UserContext = createContext<AuthState>({isLoading: false})
+export type UserContextState = {
+  user?: User
+  setUser?: (user: User) => void
+}
+
+export const UserContext = createContext<UserContextState>({})
 
 export const UserProvider: React.FC = ({children}) => {
-  const state = useUser()
-  return <UserContext.Provider value={state}>{children}</UserContext.Provider>
+  const [user, setUser] = useState<User>()
+  const calllback = useCallback((user: User) => {
+    return setUser(user)
+  }, [])
+  return (
+    <UserContext.Provider value={{user, setUser: calllback}}>
+      {children}
+    </UserContext.Provider>
+  )
 }
