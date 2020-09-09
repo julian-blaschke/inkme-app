@@ -8,9 +8,6 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "strict": true,
-    "allowJs": false,
-    "paths": {
-      "@assets": ["./assets"]
-    }
+    "allowJs": false
   }
 }

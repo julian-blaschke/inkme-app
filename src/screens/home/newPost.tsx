@@ -1,41 +1,54 @@
 import React, {useState} from "react"
-import {View, Image, Text, Picker} from "react-native"
 import {
-  TextInput,
+  View,
+  Image,
+  Text,
+  Picker,
   TouchableOpacity,
   ScrollView,
-} from "react-native-gesture-handler"
+  TextInput,
+} from "react-native"
 import tailwind from "tailwind-rn"
 import {Ionicons} from "@expo/vector-icons"
+import {Bar} from "react-native-progress"
 import {CameraNavProps} from "../../navigation/CameraNavigator"
 import {Label, ErrorLabel} from "../../components/Label"
 import {Button} from "../../components/Button"
 import firebase from "../../../firebase"
 import {useUser} from "../../hooks/auth/useUser"
 import {useCreatePost, Post} from "../../hooks/useCreatePost"
-import {Bar} from "react-native-progress"
 import {navigate} from "../../../RootNavigation"
 
+/**
+ * screen to create a new post
+ *
+ * @returns {View} `create-post` screen
+ */
 export default ({route, navigation}: CameraNavProps<"newPost">) => {
   const {photo} = route.params
   const {user} = useUser()
-  const [caption, setCaption] = useState<string>("")
+  const [caption, setCaption] = useState<string>()
   const [shopId, setShopId] = useState<string>()
-  const {create, error, isFetching, progress} = useCreatePost()
+  const [error, setError] = useState<string>()
+  const {create, isLoading, progress} = useCreatePost()
 
+  //handles the button onPress event and saves the post to firebase
   const onSubmit = async () => {
-    const post: Post = {
-      user: {
+    try {
+      const post: Partial<Post> = {
         uid: user!.uid,
         username: user!.username!,
-      },
-      caption: caption || "",
-      shopId: shopId || "",
-      photoUrl: "",
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        caption: caption,
+        shopId: shopId,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      }
+      //save post to firebase
+      await create(post, photo.uri)
+      //close the modal
+      navigate("feed")
+    } catch ({message}) {
+      setError(message)
     }
-    await create(post, photo.uri)
-    navigate("feed")
   }
 
   return (
@@ -84,12 +97,12 @@ export default ({route, navigation}: CameraNavProps<"newPost">) => {
         </Picker>
         <Button
           onPress={onSubmit}
-          style={tailwind("bg-black my-4")}
-          disabled={isFetching}>
+          disabled={isLoading}
+          style={tailwind("bg-black my-4")}>
           <Text style={tailwind("font-medium text-white")}>Share</Text>
         </Button>
-        <ErrorLabel>{error}</ErrorLabel>
-        {isFetching ? (
+        {error ? <ErrorLabel>{error}</ErrorLabel> : null}
+        {isLoading ? (
           <View style={tailwind("w-full flex")}>
             <Bar progress={progress} width={null}></Bar>
             <Text style={tailwind("p-2 text-center text-gray-600")}>

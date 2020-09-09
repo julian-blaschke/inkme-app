@@ -9,6 +9,7 @@ import {TextInput} from "react-native-gesture-handler"
 import {firestore} from "../../../firebase"
 import {useUser} from "../../hooks/auth/useUser"
 import * as yup from "yup"
+import {UserContext} from "../../context/UserContext"
 
 const checkUsernameAvailability = async (username: string) => {
   const snapshot = await firestore
@@ -33,7 +34,8 @@ const usernameSchema = yup
  */
 export default () => {
   const [username, setUsername] = React.useState<string>("")
-  const {user} = useUser()
+  //TODO: implement UserContext
+  let user = {uid: "test"}
 
   type State = {type?: "success" | "error"; message?: string}
   const [state, setState] = React.useState<State>({})

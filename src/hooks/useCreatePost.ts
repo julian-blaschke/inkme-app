@@ -1,54 +1,54 @@
-import {useState} from "react"
+import {useState, useReducer} from "react"
 import {firestore, storage} from "../../firebase"
+import {useImageUpload} from "./useImageUpload"
 
 export interface Post {
-  user: {
-    uid: string
-    username: string
-  }
+  uid: string
+  username: string
   caption?: string
   shopId?: string
-  photoUrl: string
+  mentions?: string
+  downloadURL: string
   createdAt: firebase.firestore.FieldValue
 }
 
+const defaultPost: Partial<Post> = {
+  caption: "",
+  shopId: "",
+}
+
+/**
+ * provides functionality and state management to save a new post
+ *
+ * @returns function to upload post, progress of image upload, if the process is loading
+ */
 export const useCreatePost = () => {
-  const [isFetching, setIsFetching] = useState<boolean>()
-  const [error, setError] = useState<string>()
-  const [progress, setProgress] = useState<number>()
+  const [isLoading, setIsLoading] = useState<boolean>()
+  const {upload, progress} = useImageUpload()
 
-  const create = async (post: Post, uri: string) => {
-    setIsFetching(true)
-    setError("")
+  /**
+   * function to save a post to firebase. The media supplied will be
+   * uploaded to firebase storage, and the post metadata written to cloud
+   * firestore (with the downloadURL of the uploaded media).
+   *
+   * @param {Post} post metadata for the post
+   * @param {string} uri path to the image to upload
+   */
+  const create = async (post: Partial<Post>, uri: string) => {
+    setIsLoading(true)
     try {
-      const response = await fetch(uri)
-      const blob = await response.blob()
-      const uploadTask = storage.ref(`post_images/${uri}`).put(blob)
-
-      const downloadURL = await new Promise((resolve, reject) => {
-        uploadTask.on(
-          "state_changed",
-          snapshot => {
-            return setProgress(
-              Math.round(
-                (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-              ) / 100
-            )
-          },
-          err => setError(err.message),
-          () =>
-            uploadTask.snapshot.ref
-              .getDownloadURL()
-              .then(downloadURL => resolve(downloadURL))
-        )
-      })
-      post.photoUrl = downloadURL as string
-      return firestore.collection("posts").add(post)
-    } catch ({message}) {
-      setError(message)
+      //upload image to firebase storage
+      const downloadURL = await upload(uri)
+      //write object to cloud firestore
+      return firestore
+        .collection("posts")
+        .add({...defaultPost, ...post, downloadURL})
+    } catch (error) {
+      //TODO: log create post error to firebase crashlytics
+      throw error
     } finally {
-      setIsFetching(false)
+      setIsLoading(false)
     }
   }
-  return {create, isFetching, error, progress}
+  return {create, isLoading, progress}
 }

@@ -10,9 +10,8 @@ import {Ionicons} from "@expo/vector-icons"
 import {getColor} from "tailwind-rn"
 import Discover from "../screens/home/Discover"
 import FeedNavigator from "./FeedNavigator"
-import Camera from "../screens/home/Camera"
 import CameraNavigator from "./CameraNavigator"
-import Me from "../screens/user/Me"
+import MeNavigator from "./MeNavigator"
 
 export type HomeParamList = {
   feed: undefined
@@ -31,7 +30,7 @@ const Tab = createBottomTabNavigator()
 /**
  * core  navigator for this application
  *
- * @returns navigator with screens `feed`,`camera` & `discover`
+ * @returns {Navigator} navigator with screens `feed`,`camera` & `discover`
  */
 const HomeNavigator = function () {
   return (
@@ -45,7 +44,7 @@ const HomeNavigator = function () {
         },
       })}
       tabBarOptions={{
-        activeTintColor: getColor("yellow-500"),
+        activeTintColor: getColor("teal-500"),
         inactiveTintColor: getColor("gray-700"),
         style: {
           backgroundColor: "transparent",
@@ -78,7 +77,7 @@ export default function () {
       <RootStack.Screen
         name="modal"
         component={CameraNavigator}></RootStack.Screen>
-      <RootStack.Screen name="me" component={Me}></RootStack.Screen>
+      <RootStack.Screen name="me" component={MeNavigator}></RootStack.Screen>
     </RootStack.Navigator>
   )
 }
