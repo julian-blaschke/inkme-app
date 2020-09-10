@@ -5,6 +5,8 @@ import {Subscription} from "rxjs"
 
 export interface User extends firebase.User {
   username?: string
+  subscribersCount: number
+  subscriptionsCount: number
 }
 
 export type AuthState =
@@ -72,16 +74,15 @@ export const useUser = () => {
     const unsubscribe = auth.onAuthStateChanged(async user => {
       if (user) {
         const userRef = firestore.collection("users").doc(user.uid)
-        const userData = await userRef.get()
-        if (userData.exists) {
-          firestoreSubscription.current = docData(userRef).subscribe(
-            (userData: any) => {
+        firestoreSubscription.current = docData(userRef).subscribe(
+          (userData: any) => {
+            if (userData) {
               dispatch({type: "firestoreDoc", user: {...user, ...userData}})
+            } else {
+              dispatch({type: "login", user})
             }
-          )
-        } else {
-          dispatch({type: "login", user})
-        }
+          }
+        )
       } else dispatch({type: "loggedOut"})
     })
     return () => {
@@ -90,19 +91,6 @@ export const useUser = () => {
       unsubscribe()
     }
   }, [])
-
-  //if there is a user, go get to firestore
-  useEffect(() => {
-    if (state.isLoggedIn) {
-      if (!state.isLoading) dispatch({type: "initialize"})
-      const userRef = firestore.collection("users").doc(auth.currentUser?.uid)
-      const subscription = docData(userRef).subscribe((user: any) => {
-        if (user) dispatch({type: "login", user})
-        dispatch({type: "", user: {...auth.currentUser, ...user}})
-      })
-      return () => subscription.unsubscribe()
-    }
-  }, [state.isLoggedIn])
 
   return state
 }

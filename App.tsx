@@ -10,6 +10,12 @@ import {AuthContext} from "./src/context/AuthContext"
 import tailwind from "tailwind-rn"
 import {UserContext} from "./src/context/UserContext"
 
+/**
+ * depending on the authentication state of the user (loggedIn, loggedIn & saved in firestore
+ * or loggedout) the appropriate navigator
+ *
+ * @returns the current screen/navigator
+ */
 const CurrentNavigator: React.FC = () => {
   const state = React.useContext(AuthContext)
   const {setUser} = React.useContext(UserContext)
@@ -20,7 +26,7 @@ const CurrentNavigator: React.FC = () => {
       </View>
     )
   } else if (state.isLoggedIn) {
-    if (setUser) setUser(state.user)
+    setUser(state.user)
     if (state.isInFirestore) {
       return <HomeNavigator></HomeNavigator>
     } else {

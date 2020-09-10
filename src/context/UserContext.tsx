@@ -4,11 +4,17 @@ import {User} from "../hooks/auth/useUser"
 
 export type UserContextState = {
   user?: User
-  setUser?: (user: User) => void
+  setUser: (user: User) => void
 }
 
-export const UserContext = createContext<UserContextState>({})
+const defaultState: UserContextState = {setUser: () => null}
 
+export const UserContext = createContext<UserContextState>(defaultState)
+
+/**
+ *
+ * @param
+ */
 export const UserProvider: React.FC = ({children}) => {
   const [user, setUser] = useState<User>()
   const calllback = useCallback((user: User) => {

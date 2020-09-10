@@ -1,9 +1,9 @@
 import * as React from "react"
-import {View, Text, Animated, ActivityIndicator} from "react-native"
+import {View, Text} from "react-native"
 import tailwind from "tailwind-rn"
-import {useUser, User} from "../../hooks/auth/useUser"
 import {Avatar} from "../../components/profile/Avatar"
 import {SubscriberCount} from "../../components/profile/SubscriberCount"
+import {UserContext} from "../../context/UserContext"
 
 /**
  * Shows all information of the currently logged in user, such as
@@ -16,7 +16,7 @@ import {SubscriberCount} from "../../components/profile/SubscriberCount"
  * @returns screen for my profile
  */
 export default () => {
-  const {user} = useUser()
+  const {user} = React.useContext(UserContext)
   return (
     <View style={tailwind("rounded-b-lg")}>
       <View style={tailwind("mt-10 py-4 mt-4 flex items-center")}>
@@ -31,8 +31,12 @@ export default () => {
         </Text>
         <View
           style={tailwind("mt-10 p-4 px-10 w-full flex-row justify-between")}>
-          <SubscriberCount label="subscribers" value={253}></SubscriberCount>
-          <SubscriberCount label="subscriptions" value={32}></SubscriberCount>
+          <SubscriberCount
+            label="subscribers"
+            value={user?.subscribersCount || 0}></SubscriberCount>
+          <SubscriberCount
+            label="subscriptions"
+            value={user?.subscriptionsCount || 0}></SubscriberCount>
         </View>
       </View>
     </View>

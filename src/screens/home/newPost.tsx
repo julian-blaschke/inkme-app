@@ -18,6 +18,8 @@ import firebase from "../../../firebase"
 import {useUser} from "../../hooks/auth/useUser"
 import {useCreatePost, Post} from "../../hooks/useCreatePost"
 import {navigate} from "../../../RootNavigation"
+import {useContext} from "react"
+import {UserContext} from "../../context/UserContext"
 
 /**
  * screen to create a new post
@@ -26,7 +28,7 @@ import {navigate} from "../../../RootNavigation"
  */
 export default ({route, navigation}: CameraNavProps<"newPost">) => {
   const {photo} = route.params
-  const {user} = useUser()
+  const {user} = useContext(UserContext)
   const [caption, setCaption] = useState<string>()
   const [shopId, setShopId] = useState<string>()
   const [error, setError] = useState<string>()

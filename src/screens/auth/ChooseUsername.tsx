@@ -7,9 +7,8 @@ import {Subject} from "rxjs"
 import {debounceTime, tap} from "rxjs/operators"
 import {TextInput} from "react-native-gesture-handler"
 import {firestore} from "../../../firebase"
-import {useUser} from "../../hooks/auth/useUser"
 import * as yup from "yup"
-import {UserContext} from "../../context/AuthContext"
+import {UserContext} from "../../context/UserContext"
 
 const checkUsernameAvailability = async (username: string) => {
   const snapshot = await firestore
@@ -35,7 +34,7 @@ const usernameSchema = yup
 export default () => {
   const [username, setUsername] = React.useState<string>("")
   //TODO: implement UserContext
-  let user = {uid: "test"}
+  const {user} = React.useContext(UserContext)
 
   type State = {type?: "success" | "error"; message?: string}
   const [state, setState] = React.useState<State>({})
