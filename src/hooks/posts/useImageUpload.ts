@@ -1,5 +1,5 @@
 import {useReducer} from "react"
-import {storage} from "../../firebase"
+import {storage} from "../../../firebase"
 
 type UploadState = {
   isLoading: boolean

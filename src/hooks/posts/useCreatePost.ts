@@ -1,5 +1,5 @@
 import {useState, useReducer} from "react"
-import {firestore, storage} from "../../firebase"
+import {firestore, storage} from "../../../firebase"
 import {useImageUpload} from "./useImageUpload"
 
 export interface Post {

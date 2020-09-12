@@ -1,9 +1,11 @@
 import * as React from "react"
-import {View, Text} from "react-native"
+import {View, Text, ScrollView, ActivityIndicator} from "react-native"
 import tailwind from "tailwind-rn"
 import {Avatar} from "../../components/profile/Avatar"
 import {SubscriberCount} from "../../components/profile/SubscriberCount"
 import {UserContext} from "../../context/UserContext"
+import {Post} from "../../components/posts/Post"
+import {usePosts} from "../../hooks/posts/usePosts"
 
 /**
  * Shows all information of the currently logged in user, such as
@@ -17,28 +19,34 @@ import {UserContext} from "../../context/UserContext"
  */
 export default () => {
   const {user} = React.useContext(UserContext)
+  //const {isFetching, posts} = usePosts(user!.uid)
+  let isFetching = false
+  let posts = []
+
   return (
-    <View style={tailwind("rounded-b-lg")}>
-      <View style={tailwind("mt-10 py-4 mt-4 flex items-center")}>
+    <ScrollView stickyHeaderIndices={[1]}>
+      <View style={tailwind("p-4 w-full flex flex-row")}>
         <Avatar
           photoURL={user?.photoURL}
-          style={tailwind("h-40 w-40")}></Avatar>
-        <Text style={tailwind("mt-4 text-2xl font-medium")}>
-          @{user?.username}
+          style={tailwind("h-20 w-20")}></Avatar>
+        <Text style={tailwind("ml-4 flex-shrink font-light text-gray-700")}>
+          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+          nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
+          sed diam voluptua. At
         </Text>
-        <Text style={tailwind("text-sm text-gray-600 font-light")}>
-          owner @nicershop123
-        </Text>
-        <View
-          style={tailwind("mt-10 p-4 px-10 w-full flex-row justify-between")}>
-          <SubscriberCount
-            label="subscribers"
-            value={user?.subscribersCount || 0}></SubscriberCount>
-          <SubscriberCount
-            label="subscriptions"
-            value={user?.subscriptionsCount || 0}></SubscriberCount>
-        </View>
       </View>
-    </View>
+      <View style={tailwind("mt-4 px-4 justify-between ")}>
+        <Text style={tailwind("text-2xl font-semibold")}>Posts</Text>
+      </View>
+      <View style={tailwind("mt-2 px-4")}>
+        {isFetching ? (
+          <ActivityIndicator></ActivityIndicator>
+        ) : (
+          posts?.map(post => (
+            <Post key={post.id} downloadURL={post.downloadURL}></Post>
+          ))
+        )}
+      </View>
+    </ScrollView>
   )
 }

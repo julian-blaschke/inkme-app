@@ -60,7 +60,7 @@ export default ({navigation}: AuthNavProps<"login">) => {
           <Button
             onPress={handleSubmit(signIn)}
             disabled={isLoading}
-            style={tailwind("bg-pink-500")}>
+            style={tailwind("bg-teal-500")}>
             <Text style={tailwind("font-medium text-white")}>Sign In</Text>
           </Button>
           <ErrorLabel>{error}</ErrorLabel>

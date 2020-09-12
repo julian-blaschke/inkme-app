@@ -9,9 +9,5 @@ import tailwind from "tailwind-rn"
  * @returns `discover` screen as a scroll-view
  */
 export default () => {
-  return (
-    <SafeAreaView>
-      <View style={tailwind("p-4 flex flex-row justify-between")}></View>
-    </SafeAreaView>
-  )
+  return <SafeAreaView></SafeAreaView>
 }

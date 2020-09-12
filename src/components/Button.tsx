@@ -3,7 +3,7 @@ import {TouchableOpacity} from "react-native-gesture-handler"
 import {Text, Image, TouchableOpacityProps} from "react-native"
 import * as AppleAuthentication from "expo-apple-authentication"
 import tailwind from "tailwind-rn"
-import firebase, {auth} from "../../firebase"
+import {AntDesign} from "@expo/vector-icons"
 import {useSignInWithGoogle, useSignInWithApple} from "../hooks/auth/useSignIn"
 import {ErrorLabel} from "./Label"
 
@@ -41,9 +41,7 @@ export const SignInWithGoogleButton: React.FC<TouchableOpacityProps> = props => 
   return (
     <>
       <Button disabled={isLoading} onPress={signInWithGoogle} {...props}>
-        <Image
-          source={require("../../assets/icons/socialMedia/Google.png")}
-          style={tailwind("h-3 w-3 mr-1")}></Image>
+        <AntDesign name="google" size={14} style={tailwind("mr-1")}></AntDesign>
         <Text style={tailwind("font-medium")}>Sign In With Google</Text>
       </Button>
       <ErrorLabel>{error}</ErrorLabel>

@@ -4,15 +4,13 @@ import {
   createStackNavigator,
 } from "@react-navigation/stack"
 import tailwind from "tailwind-rn"
-import {RouteProp, useNavigation} from "@react-navigation/native"
-import {Ionicons} from "@expo/vector-icons"
+import {RouteProp} from "@react-navigation/native"
+import {AntDesign} from "@expo/vector-icons"
 import Feed from "../screens/home/Feed"
-import Me from "../screens/user/Me"
-import {useUser} from "../hooks/auth/useUser"
 import {View} from "react-native"
 import {TouchableOpacity} from "react-native-gesture-handler"
-import create from "zustand"
 import {Avatar} from "../components/profile/Avatar"
+import {UserContext} from "../context/UserContext"
 
 export type FeedParamList = {
   feed: undefined
@@ -32,8 +30,7 @@ const Stack = createStackNavigator()
  * @returns navigator with screens `feed` & `myProfile`
  */
 export default function () {
-  const {user} = useUser()
-  const navigationRef = React.createRef()
+  const {user} = React.useContext(UserContext)
 
   return (
     <Stack.Navigator screenOptions={{headerBackground: () => null}}>
@@ -43,23 +40,24 @@ export default function () {
         options={({navigation}) => ({
           headerTitleAlign: "left",
           title: "Feed",
-          headerTitleStyle: tailwind("text-3xl text-teal-500  "),
+          headerTitleStyle: tailwind("text-2xl"),
           headerRight: () => (
             <View style={tailwind("flex flex-row items-center")}>
               <TouchableOpacity onPress={() => navigation.navigate("modal")}>
-                <Ionicons
-                  name="ios-add"
-                  size={40}
-                  style={tailwind("px-4")}></Ionicons>
+                <AntDesign
+                  name="plus"
+                  size={24}
+                  style={tailwind("mr-6")}></AntDesign>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => navigation.navigate("me")}>
-                <Avatar
-                  photoURL={user?.photoURL}
-                  style={tailwind("w-10 h-10")}></Avatar>
+                <AntDesign
+                  name="user"
+                  size={24}
+                  style={tailwind("")}></AntDesign>
               </TouchableOpacity>
             </View>
           ),
-          headerRightContainerStyle: tailwind("mx-3"),
+          headerRightContainerStyle: tailwind("px-4"),
         })}></Stack.Screen>
     </Stack.Navigator>
   )

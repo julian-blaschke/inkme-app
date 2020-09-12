@@ -6,12 +6,13 @@ import {
 } from "@react-navigation/stack"
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs"
 import {RouteProp} from "@react-navigation/native"
-import {Ionicons} from "@expo/vector-icons"
-import {getColor} from "tailwind-rn"
-import Discover from "../screens/home/Discover"
+import {AntDesign} from "@expo/vector-icons"
+import tailwind, {getColor} from "tailwind-rn"
 import FeedNavigator from "./FeedNavigator"
 import CameraNavigator from "./CameraNavigator"
 import MeNavigator from "./MeNavigator"
+import DiscoverNavigator from "./DiscoverNavigator"
+import {Image} from "react-native"
 
 export type HomeParamList = {
   feed: undefined
@@ -25,7 +26,7 @@ export type HomeNavProps<T extends keyof HomeParamList> = {
 }
 
 const RootStack = createStackNavigator()
-const Tab = createBottomTabNavigator()
+const Tab = createBottomTabNavigator<HomeParamList>()
 
 /**
  * core  navigator for this application
@@ -37,15 +38,13 @@ const HomeNavigator = function () {
     <Tab.Navigator
       screenOptions={({route}) => ({
         tabBarIcon: ({color, size}) => {
-          let iconName
-          if (route.name == "feed") iconName = "ios-home"
-          else iconName = "ios-search"
-          return <Ionicons name={iconName} {...{size, color}}></Ionicons>
+          let icon = route.name === "feed" ? "home" : "rocket1"
+          return <AntDesign name={icon} size={size} color={color}></AntDesign>
         },
       })}
       tabBarOptions={{
-        activeTintColor: getColor("teal-500"),
-        inactiveTintColor: getColor("gray-700"),
+        activeTintColor: getColor("black"),
+        inactiveTintColor: getColor("gray-500"),
         style: {
           backgroundColor: "transparent",
           position: "absolute",
@@ -54,7 +53,7 @@ const HomeNavigator = function () {
         },
       }}>
       <Tab.Screen name="feed" component={FeedNavigator}></Tab.Screen>
-      <Tab.Screen name="discover" component={Discover}></Tab.Screen>
+      <Tab.Screen name="discover" component={DiscoverNavigator}></Tab.Screen>
     </Tab.Navigator>
   )
 }

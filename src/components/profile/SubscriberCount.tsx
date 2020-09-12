@@ -19,8 +19,8 @@ export const SubscriberCount: React.FC<SubscriberCountProps> = ({
   value,
 }) => (
   <View style={tailwind("flex items-center")}>
-    <Text style={tailwind("text-xl font-bold ")}>{value}</Text>
-    <Text style={tailwind("uppercase text-xs font-semibold text-gray-600")}>
+    <Text style={tailwind("text-2xl font-medium")}>{value}</Text>
+    <Text style={tailwind("uppercase text-xs font-light text-gray-600")}>
       {label}
     </Text>
   </View>

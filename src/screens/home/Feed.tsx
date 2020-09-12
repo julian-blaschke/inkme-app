@@ -13,21 +13,5 @@ import {View} from "react-native"
  * @return the `feed` screen
  */
 export default function ({navigation}: FeedNavProps<"feed">) {
-  const stories: StoryProps[] = [
-    {
-      title: "postmalone",
-      uri:
-        "https://i.pinimg.com/originals/f3/a8/9a/f3a89a1b76ba089b7ef1aec8eab1978f.jpg",
-    },
-    {
-      title: "slimshady",
-      uri:
-        "https://www.bravo.de/assets/field/image/rapper_eminem_so_lange_halt_er_es_ohne_drogen_aus.jpg",
-    },
-  ]
-  return (
-    <View style={tailwind("mt-4")}>
-      <Stories stories={stories}></Stories>
-    </View>
-  )
+  return <View></View>
 }

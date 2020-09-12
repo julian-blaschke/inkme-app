@@ -76,7 +76,7 @@ export const useUser = () => {
         const userRef = firestore.collection("users").doc(user.uid)
         firestoreSubscription.current = docData(userRef).subscribe(
           (userData: any) => {
-            if (userData) {
+            if (userData.username) {
               dispatch({type: "firestoreDoc", user: {...user, ...userData}})
             } else {
               dispatch({type: "login", user})
@@ -86,8 +86,7 @@ export const useUser = () => {
       } else dispatch({type: "loggedOut"})
     })
     return () => {
-      if (firestoreSubscription.current)
-        firestoreSubscription.current.unsubscribe()
+      firestoreSubscription.current?.unsubscribe()
       unsubscribe()
     }
   }, [])

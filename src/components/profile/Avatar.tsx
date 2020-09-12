@@ -19,7 +19,7 @@ export const Avatar: React.FC<AvatarProps> = props => {
     "https://images.unsplash.com/photo-1571115486184-cca88bc4d2ed?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80"
   return (
     <Image
-      style={Object.assign(tailwind("rounded-full"), style)}
+      style={Object.assign(tailwind("rounded-lg"), style)}
       source={{uri}}
       {...rest}></Image>
   )
