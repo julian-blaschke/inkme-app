@@ -58,7 +58,7 @@ const HomeNavigator = function () {
   )
 }
 
-//wrapper to open Camera Modal
+//Modal Navigation for `Me` & `Camera` screens (global modals)
 export default function () {
   return (
     <RootStack.Navigator

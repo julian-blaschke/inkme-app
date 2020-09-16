@@ -1,6 +1,6 @@
 import * as React from "react"
 import {TouchableOpacity} from "react-native-gesture-handler"
-import {Text, Image, TouchableOpacityProps} from "react-native"
+import {Text, TouchableOpacityProps} from "react-native"
 import * as AppleAuthentication from "expo-apple-authentication"
 import tailwind from "tailwind-rn"
 import {AntDesign} from "@expo/vector-icons"

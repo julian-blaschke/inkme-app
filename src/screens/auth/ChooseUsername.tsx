@@ -1,4 +1,5 @@
 import * as React from "react"
+import * as yup from "yup"
 import {KeyboardAvoidingView, Text, SafeAreaView, View} from "react-native"
 import tailwind from "tailwind-rn"
 import {Label} from "../../components/Label"
@@ -7,7 +8,6 @@ import {Subject} from "rxjs"
 import {debounceTime, tap} from "rxjs/operators"
 import {TextInput} from "react-native-gesture-handler"
 import {firestore} from "../../../firebase"
-import * as yup from "yup"
 import {UserContext} from "../../context/UserContext"
 
 const checkUsernameAvailability = async (username: string) => {
@@ -33,7 +33,6 @@ const usernameSchema = yup
  */
 export default () => {
   const [username, setUsername] = React.useState<string>("")
-  //TODO: implement UserContext
   const {user} = React.useContext(UserContext)
 
   type State = {type?: "success" | "error"; message?: string}
@@ -71,7 +70,10 @@ export default () => {
       await usernameSchema.validate(username)
       const isTaken = await checkUsernameAvailability(username)
       if (isTaken) throw new Error(`${username} is already taken.`)
-      await firestore.collection("users").doc(user?.uid).set({username})
+      await firestore
+        .collection("users")
+        .doc(user?.uid)
+        .set({photoURL: user?.photoURL, email: user?.email, username})
     } catch ({message}) {
       setState({type: "error", message})
     }

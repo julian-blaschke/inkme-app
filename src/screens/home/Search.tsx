@@ -5,13 +5,18 @@ import {DiscoverNavProps} from "../../navigation/DiscoverNavigator"
 import {useSearchResults} from "../../hooks/search/useSearchResults"
 import {SearchResult} from "../../components/search/SearchResult"
 
-export default ({route}: DiscoverNavProps<"search">) => {
+export default ({route, navigation}: DiscoverNavProps<"search">) => {
   const results = useSearchResults(route.params?.input)
   return (
     <SafeAreaView style={tailwind("mt-4")}>
       {results
         ? results.map(result => (
-            <SearchResult key={result.id} {...result}></SearchResult>
+            <SearchResult
+              key={result.uid}
+              {...result}
+              onPress={() =>
+                navigation.navigate("user", {...result})
+              }></SearchResult>
           ))
         : null}
     </SafeAreaView>

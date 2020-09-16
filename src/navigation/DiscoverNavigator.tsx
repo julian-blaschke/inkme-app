@@ -12,13 +12,14 @@ import {TouchableOpacity} from "react-native-gesture-handler"
 import {Text} from "react-native"
 import Search from "../screens/home/Search"
 import {SearchInput} from "../components/search/SearchInput"
+import {UserParamList, addUserRoutes} from "./addUserRoutes"
 
 export type DiscoverParamList = {
   discover: undefined
   search: {
     input: string
   }
-}
+} & UserParamList
 
 export type DiscoverNavProps<T extends keyof DiscoverParamList> = {
   navigation: StackNavigationProp<DiscoverParamList, T>
@@ -30,11 +31,12 @@ const Stack = createStackNavigator<DiscoverParamList>()
 export default () => {
   return (
     <Stack.Navigator
+      initialRouteName="discover"
       screenOptions={() => ({
         headerBackground: () => null,
-        cardStyleInterpolator:
-          CardStyleInterpolators.forRevealFromBottomAndroid,
+        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid,
       })}>
+      {addUserRoutes(Stack as any)}
       <Stack.Screen
         name="discover"
         component={Discover}

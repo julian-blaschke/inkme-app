@@ -11,11 +11,12 @@ import {View} from "react-native"
 import {TouchableOpacity} from "react-native-gesture-handler"
 import {Avatar} from "../components/profile/Avatar"
 import {UserContext} from "../context/UserContext"
+import {UserParamList} from "./addUserRoutes"
 
 export type FeedParamList = {
   feed: undefined
   myProfile: undefined
-}
+} & UserParamList
 
 export type FeedNavProps<T extends keyof FeedParamList> = {
   navigation: StackNavigationProp<FeedParamList, T>

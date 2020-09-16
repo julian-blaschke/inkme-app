@@ -29,7 +29,10 @@ export const useSignUpWithEmailAndPassword = () => {
         .then(async ({user}) => {
           if (user) {
             let {uid} = user
-            await firestore.collection("users").doc(uid.toString()).set({})
+            await firestore
+              .collection("users")
+              .doc(uid.toString())
+              .set({...user})
           }
         })
         .catch(err => setError(err))

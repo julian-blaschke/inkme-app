@@ -3,7 +3,7 @@ import {collectionData} from "rxfire/firestore"
 import {firestore} from "../../../firebase"
 
 export interface Result {
-  id: string
+  uid: string
   username: string
   photoURL?: string
 }
@@ -19,7 +19,7 @@ export const useSearchResults = (search: string) => {
         .where("username", "<=", search + "\uf8ff")
       const subscription = collectionData(
         usersRef,
-        "id"
+        "uid"
       ).subscribe((users: any) => setResults(users))
       return () => subscription.unsubscribe()
     }

@@ -1,12 +1,23 @@
 import React from "react"
 import tailwind from "tailwind-rn"
-import {View, Image, Text} from "react-native"
+import {View, Image, Text, GestureResponderEvent} from "react-native"
 import {AntDesign} from "@expo/vector-icons"
 import {Result} from "../../hooks/search/useSearchResults"
+import {TouchableOpacity} from "react-native-gesture-handler"
 
-export const SearchResult: React.FC<Result> = ({username, photoURL}) => {
+interface SearchResultProps extends Result {
+  onPress?: (event: GestureResponderEvent) => void
+}
+
+export const SearchResult: React.FC<SearchResultProps> = ({
+  username,
+  photoURL,
+  onPress,
+}) => {
   return (
-    <View style={tailwind("p-4 flex flex-row justify-between items-center")}>
+    <TouchableOpacity
+      onPress={onPress}
+      style={tailwind("p-4 flex flex-row justify-between items-center")}>
       <View style={tailwind("flex flex-row items-center")}>
         <Image
           source={{uri: photoURL}}
@@ -19,6 +30,6 @@ export const SearchResult: React.FC<Result> = ({username, photoURL}) => {
         </View>
       </View>
       <AntDesign name="right" size={20}></AntDesign>
-    </View>
+    </TouchableOpacity>
   )
 }
