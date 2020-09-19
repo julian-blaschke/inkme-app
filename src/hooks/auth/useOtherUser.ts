@@ -11,7 +11,7 @@ export const useOtherUser = (uid: string) => {
   useEffect(() => {
     setIsFetching(true)
     const userRef = firestore.collection("users").doc(uid)
-    const subscription = docData(userRef, uid).subscribe((data: any) => {
+    const subscription = docData(userRef, "uid").subscribe((data: any) => {
       if (data) {
         setUser(data)
       } else {

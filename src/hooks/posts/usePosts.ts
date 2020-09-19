@@ -34,3 +34,25 @@ export const usePosts = (uid: string) => {
 
   return {isFetching, posts}
 }
+
+/**
+ *
+ *
+ * @param {string} id of the collection to get the posts from
+ */
+export const useCollectionPosts = (id: string) => {
+  const [posts, setPosts] = useState<Post>()
+
+  useEffect(() => {
+    const postRef = firestore
+      .collection("collection")
+      .doc(id)
+      .collection("posts")
+    const subscription = collectionData(postRef, "id").subscribe((posts: any) =>
+      setPosts(posts)
+    )
+    return () => subscription.unsubscribe()
+  }, [id])
+
+  return posts
+}

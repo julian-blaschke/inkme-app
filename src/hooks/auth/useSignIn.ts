@@ -2,7 +2,7 @@ import {useState} from "react"
 import * as Google from "expo-google-app-auth"
 import * as AppleAuthentication from "expo-apple-authentication"
 import firebase, {auth} from "../../../firebase"
-import {iosClientId} from "../../../firebase.config"
+import {iosClientId, androidClientId} from "../../../firebase.config"
 
 /**
  * provides functionality to sign in a user into firebase authentication
@@ -59,6 +59,7 @@ export const useSignInWithGoogle = () => {
       //open pop-up and sign in user with Google API OAuth
       const result = await Google.logInAsync({
         iosClientId,
+        androidClientId,
         //TODO: add androidClientId here
         scopes: ["profile", "email"],
       })

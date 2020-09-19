@@ -34,7 +34,6 @@ export default () => {
       initialRouteName="discover"
       screenOptions={() => ({
         headerBackground: () => null,
-        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid,
       })}>
       {addUserRoutes(Stack as any)}
       <Stack.Screen
@@ -65,6 +64,8 @@ export default () => {
               <Text>Cancel</Text>
             </TouchableOpacity>
           ),
+          cardStyleInterpolator:
+            CardStyleInterpolators.forRevealFromBottomAndroid,
           headerRightContainerStyle: tailwind("px-4"),
         })}></Stack.Screen>
     </Stack.Navigator>

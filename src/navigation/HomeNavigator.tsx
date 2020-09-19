@@ -7,12 +7,11 @@ import {
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs"
 import {RouteProp} from "@react-navigation/native"
 import {AntDesign} from "@expo/vector-icons"
-import tailwind, {getColor} from "tailwind-rn"
+import {getColor} from "tailwind-rn"
 import FeedNavigator from "./FeedNavigator"
 import CameraNavigator from "./CameraNavigator"
-import MeNavigator from "./MeNavigator"
 import DiscoverNavigator from "./DiscoverNavigator"
-import {Image} from "react-native"
+import MeNavigator from "./MeNavigator"
 
 export type HomeParamList = {
   feed: undefined

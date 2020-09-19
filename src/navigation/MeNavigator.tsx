@@ -1,20 +1,18 @@
-import * as React from "react"
-import {
-  StackNavigationProp,
-  createStackNavigator,
-} from "@react-navigation/stack"
+import {createBottomTabNavigator} from "@react-navigation/bottom-tabs"
 import {RouteProp} from "@react-navigation/native"
-import tailwind from "tailwind-rn"
 import {AntDesign} from "@expo/vector-icons"
-import Me from "../screens/user/Me"
-import MySettings from "../screens/user/MySettings"
-import {UserContext} from "../context/UserContext"
-import {Text} from "react-native"
-import {TouchableOpacity} from "react-native-gesture-handler"
+import {StackNavigationProp} from "@react-navigation/stack"
+import * as React from "react"
+import MyProfileNavigator from "./MyProfileNavigator"
+import {getColor} from "tailwind-rn"
+import myShops from "../screens/shop/MyShops"
+import MyCollectionsNavigator from "./MyCollectionsNavigator"
+import MyShopsNavigator from "./MyShopsNavigator"
 
 export type MeParamList = {
-  me: undefined
-  mySettings: undefined
+  myProfile: undefined
+  myShops: undefined
+  myCollections: undefined
 }
 
 export type MeNavProps<T extends keyof MeParamList> = {
@@ -22,52 +20,35 @@ export type MeNavProps<T extends keyof MeParamList> = {
   route: RouteProp<MeParamList, T>
 }
 
-const Stack = createStackNavigator<MeParamList>()
+const Tab = createBottomTabNavigator<MeParamList>()
 
-/**
- * handles all navigation related to the logged in user`s profile.
- *
- *  @returns {Navigator} the `me` Navigator
- */
 export default () => {
-  const {user} = React.useContext(UserContext)
-
   return (
-    <Stack.Navigator
-      screenOptions={{headerStatusBarHeight: 20, headerBackground: () => null}}>
-      <Stack.Screen
-        name="me"
-        component={Me}
-        options={({navigation}) => ({
-          headerLeft: () => null,
-          headerTitleAlign: "left",
-          title: `@${user?.username}`,
-          headerTitleStyle: tailwind("text-2xl"),
-          headerLeftContainerStyle: tailwind("px-4"),
-          headerRight: () => (
-            <AntDesign
-              name="setting"
-              size={24}
-              onPress={() => navigation.navigate("mySettings")}></AntDesign>
-          ),
-          headerRightContainerStyle: tailwind("px-4"),
-        })}></Stack.Screen>
-      <Stack.Screen
-        name="mySettings"
-        component={MySettings}
-        options={({navigation}) => ({
-          headerLeft: () => null,
-          headerTitleAlign: "left",
-          title: "Settings",
-          headerTitleStyle: tailwind("text-2xl"),
-          headerLeftContainerStyle: tailwind("px-4"),
-          headerRight: () => (
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Text>Close</Text>
-            </TouchableOpacity>
-          ),
-          headerRightContainerStyle: tailwind("px-4"),
-        })}></Stack.Screen>
-    </Stack.Navigator>
+    <Tab.Navigator
+      initialRouteName="myProfile"
+      screenOptions={({route}) => ({
+        tabBarIcon: ({color, size}) => {
+          let icon = ""
+          if (route.name === "myProfile") {
+            icon = "user"
+          } else if (route.name === "myShops") {
+            icon = "isv"
+          } else {
+            icon = "book"
+          }
+          return <AntDesign name={icon} size={size} color={color}></AntDesign>
+        },
+      })}
+      tabBarOptions={{
+        activeTintColor: getColor("black"),
+        inactiveTintColor: getColor("gray-500"),
+        showLabel: false,
+      }}>
+      <Tab.Screen name="myShops" component={MyShopsNavigator}></Tab.Screen>
+      <Tab.Screen name="myProfile" component={MyProfileNavigator}></Tab.Screen>
+      <Tab.Screen
+        name="myCollections"
+        component={MyCollectionsNavigator}></Tab.Screen>
+    </Tab.Navigator>
   )
 }
