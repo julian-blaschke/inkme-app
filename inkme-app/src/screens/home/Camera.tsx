@@ -58,7 +58,6 @@ export default ({navigation}: CameraNavProps<"camera">) => {
             //take photo
             if (camera) {
               let photo = await camera.takePictureAsync()
-              console.log(photo)
               navigation.navigate("newPost", {photo})
             }
           }}

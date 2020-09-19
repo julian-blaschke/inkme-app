@@ -2,7 +2,7 @@ import {useState, useEffect} from "react"
 import {collectionData} from "rxfire/firestore"
 import {firestore} from "../../../firebase"
 
-interface Post {
+export interface Post {
   id: string
   downloadURL: string
 }

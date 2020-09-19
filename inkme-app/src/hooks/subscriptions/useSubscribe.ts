@@ -17,7 +17,7 @@ export const useSubscribe = () => {
       const subscriptionRef = firestore
         .collection("subscriptions")
         .doc(subscriptionId)
-      return subscriptionRef.set({
+      return subscriptionRef.update({
         subscribers: firebase.firestore.FieldValue.arrayUnion(subscriberId),
       })
     } finally {
